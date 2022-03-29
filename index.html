@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Pagina Visualizzazioni</title>
+        <!-- Favicon-->
+        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="css/styles.css" rel="stylesheet" />
+    </head>
+    <body>
+        <!-- Responsive navbar-->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container">
+                <a class="navbar-brand" href="#">Visualizzazioni Log</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="#">Home</a></li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Visualizzazioni</a>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" href="#indexed_records">Indexed Records</a></li>
+                                <li><a class="dropdown-item" href="#used_services">Servizi Utilizzati</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!-- Page content-->
+        <div class="container">
+            <div class="text-center mt-5">
+                <h1>Visualizzazioni</h1>
+                <p class="lead">Visualizzazioni dei dati di Log in OpenCitations</p>
+                <p>2021-2022</p>
+
+                <h2 id="indexed_records">Indexed Records</h2>
+                <h4>--- Proposta 1  ---</h4>
+
+
+                <div class="graph_cont">
+                    <canvas id="myChart"></canvas>
+                </div>
+
+                <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+                <script>
+                    const labels = [
+                    "Gen 21",
+                    "Mar 21",
+                    "Mag 21",
+                    "Lug 21",
+                    "Set 21",
+                    "Nov 21",
+                    "Gen 22"
+                    ];
+                  
+                    const data = {
+                      labels: labels,
+                      datasets: [{
+                        label: 'OC Indexed Records',
+                        backgroundColor: '#AB54FD',
+                        borderColor: 'purple',
+                        borderWidth: 1,
+                        data: [759516507.0, 759516507.0, 759516507.0, 1094394688.0, 1186958898.0, 1235170583.0, 1271360867.0],
+                      }]
+                    };
+                  
+                    const config = {
+                      type: 'line',
+                      data: data,
+                      options: {}
+                    };
+                </script> 
+
+                <script>
+                    const myChart = new Chart(
+                        document.getElementById('myChart'),
+                        config
+                    );
+                </script>
+                
+                
+                <h4>--- Proposta 2  ---</h4>
+
+                <div class="graph_cont">
+                    <canvas id="myChart3"></canvas>
+                </div>
+
+                <script>
+                var barChartData3 = {
+                    labels: [
+                    "Gen 21",
+                    "Mar 21",
+                    "Mag 21",
+                    "Lug 21",
+                    "Set 21",
+                    "Nov 21",
+                    "Gen 22"
+                    ],
+
+                    datasets: [
+                      {
+                        label: "Indexed Records in OpenCitations",
+                        backgroundColor: "#AB54FD",
+                        borderColor: "purple",
+                        borderWidth: 1,
+                        data: [759516507.0, 759516507.0, 759516507.0, 1094394688.0, 1186958898.0, 1235170583.0, 1271360867.0]
+                      }
+                    ]
+                  };
+                  
+                  var chartOptions3 = {
+                    responsive: true,
+                    legend: {
+                      position: "top"
+                    },
+                    title: {
+                      display: true,
+                      text: "Chart.js Bar Chart3"
+                    },
+                    scales: {
+                      yAxes: [{
+                        ticks: {
+                          beginAtZero: true
+                        }
+                      }]
+                    }
+                  }
+                  
+                  window.onload = function() {
+                    var ctx = document.getElementById("myChart3").getContext("2d");
+                    window.myBar = new Chart(ctx, {
+                      type: "bar",
+                      data: barChartData,
+                      options: chartOptions3
+                    });
+                  };
+                  </script>
+
+
+
+
+
+                <h2 id="used_services">Servizi Utilizzati</h2>
+
+                <h4>--- Proposta 1  ---</h4>
+
+                <div id="container" class="graph_cont">
+                    <canvas id="myChart2"></canvas>
+                </div>
+
+                <script>var barChartData = {
+                    labels: [
+                      "Gen 21",
+                      "Feb 21",
+                      "Mar 21",
+                      "Apr 21",
+                      "Mag 21",
+                      "Giu 21"
+                    ],
+                    datasets: [
+                      {
+                        label: "Sparql",
+                        backgroundColor: "#AB54FD",
+                        borderColor: "purple",
+                        borderWidth: 1,
+                        data: [1325071.0, 1438340.0, 2912619.0, 3466690.0, 1235849.0, 734435.0]
+                      },
+                      {
+                        label: "API",
+                        backgroundColor: "#3C41E5",
+                        borderColor: "blue",
+                        borderWidth: 1,
+                        data: [1319211.0, 1429823.0, 2887899.0, 3447441.0, 1229705.0, 727251.0]
+                      },
+                      {
+                        label: "Datasets",
+                        backgroundColor: "#0001",
+                        borderColor: "grey",
+                        borderWidth: 1,
+                        data: [9652.0, 17064.0, 30224.0, 35615.0, 54006.0, 54935.0]
+                      },
+                    ]
+                  };
+                  
+                  var chartOptions = {
+                    responsive: true,
+                    legend: {
+                      position: "top"
+                    },
+                    title: {
+                      display: true,
+                      text: "Chart.js Bar Chart"
+                    },
+                    scales: {
+                      yAxes: [{
+                        ticks: {
+                          beginAtZero: true
+                        }
+                      }]
+                    }
+                  }
+                  
+                  window.onload = function() {
+                    var ctx = document.getElementById("myChart2").getContext("2d");
+                    var ctx3 = document.getElementById("myChart3").getContext("2d");
+
+                    window.myBar = new Chart(ctx, {
+                      type: "bar",
+                      data: barChartData,
+                      options: chartOptions
+                    });
+
+                    window.myBar3 = new Chart(ctx3, {
+                      type: "bar",
+                      data: barChartData3,
+                      options: chartOptions3
+                    });
+                  };
+                  </script>
+
+
+                <h4>--- Proposta 2  ---</h4>
+
+
+
+                <div class="graph_cont">
+                    <canvas id="myChart4"></canvas>
+                </div>
+
+                <script>
+                    labels: [
+                      "Gen 21",
+                      "Feb 21",
+                      "Mar 21",
+                      "Apr 21",
+                      "Mag 21",
+                      "Giu 21"
+                    ];
+                  
+                    const data4 = {
+                      labels: labels,
+                      datasets: [{
+                        label: "Sparql Requests",
+                        backgroundColor: "#AB54FD",
+                        borderColor: "purple",
+                        borderWidth: 1,
+                        data: [1325071.0, 1438340.0, 2912619.0, 3466690.0, 1235849.0, 734435.0]
+                      },
+                      {
+                        label: "API Requests",
+                        backgroundColor: "#3C41E5",
+                        borderColor: "blue",
+                        borderWidth: 1,
+                        data: [1319211.0, 1429823.0, 2887899.0, 3447441.0, 1229705.0, 727251.0]
+                      },
+                      {
+                        label: "Datasets Requests",
+                        backgroundColor: "#0001",
+                        borderColor: "grey",
+                        borderWidth: 1,
+                        data: [9652.0, 17064.0, 30224.0, 35615.0, 54006.0, 54935.0]
+                      }]
+                    };
+                  
+                    const config4 = {
+                      type: 'line',
+                      data: data4,
+                      options: {}
+                    };
+                </script> 
+
+                <script>
+                    const myChart4 = new Chart(
+                        document.getElementById('myChart4'),
+                        config4
+                    );
+                </script>
+
+
+                
+
+
+                
+
+
+  
+                  
+                  
+
+
+            </div>
+        </div>
+        <!-- Bootstrap core JS-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Core theme JS-->
+        <script src="js/scripts.js"></script>
+
+    </body>
+</html>
