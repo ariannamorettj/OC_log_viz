@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Pagina Visualizzazioni</title>
+        <!-- Favicon-->
+        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="css/styles.css" rel="stylesheet" />
+
+        <script src="https://jsuites.net/v4/jsuites.js"></script>
+        <link rel="stylesheet" href="https://jsuites.net/v4/jsuites.css" type="text/css" />
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+        
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.1/jquery.js"></script>
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui.min.js"></script>
+        <link rel="stylesheet" type="text/css" media="screen" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/base/jquery-ui.css">
+
+
+
+
+        
+
+        <link href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" rel="stylesheet" type="text/css" />
+    
+        <link href="MonthPicker.min.css" rel="stylesheet" type="text/css" />
+    
+        <script src="https://code.jquery.com/jquery-1.12.1.min.js"></script>
+        <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+        <script src="https://cdn.rawgit.com/digitalBush/jquery.maskedinput/1.4.1/dist/jquery.maskedinput.min.js"></script>
+    
+        <script src="MonthPicker.min.js"></script>
+        <script src="examples.js"></script>
+
+    </head>
+    <body>
+        <!-- Responsive navbar-->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container">
+                <a class="navbar-brand" href="#">Visualizzazioni Log</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" id="navbarDropdown" href="index.html" role="button" data-bs-toggle="dropdown" aria-expanded="false">Visualizzazioni</a>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" href="index.html#indexed_records">Indexed Records</a></li>
+                                <li><a class="dropdown-item" href="index.html#used_services">Servizi Utilizzati</a></li>
+                            </ul>
+                            <a class="nav-link dropdown-toggle" id="navbarDropdown" href="samples.html" role="button" data-bs-toggle="dropdown" aria-expanded="false">Prove</a>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" href="samples.html#data_extraction">Estrazione Dati</a></li>
+                                <li><a class="dropdown-item" href="samples.html#date_selection">Selezione Data</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!-- Page content-->
+        <div class="container">
+            <div class="text-center mt-5">
+                <h1>Prove</h1>
+
+                <h2 id="data_extraction">Estrazione Dati</h2>
+                <h4>--- Proposta 1  ---</h4>
+
+
+                <div class="graph_cont">
+                    <canvas id="myChart"></canvas>
+                </div>
+
+                <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+                <script>
+                    const labels = [
+                    "Gen 21",
+                    "Mar 21",
+                    "Mag 21",
+                    "Lug 21",
+                    "Set 21",
+                    "Nov 21",
+                    "Gen 22"
+                    ];
+                  
+                    const data = {
+                      labels: labels,
+                      datasets: [{
+                        label: 'OC Indexed Records',
+                        backgroundColor: '#AB54FD',
+                        borderColor: 'purple',
+                        borderWidth: 1,
+                        data: [759516507.0, 759516507.0, 759516507.0, 1094394688.0, 1186958898.0, 1235170583.0, 1271360867.0],
+                      }]
+                    };
+                  
+                    const config = {
+                      type: 'line',
+                      data: data,
+                      options: {}
+                    };
+                </script> 
+
+                <script>
+                    const myChart = new Chart(
+                        document.getElementById('myChart'),
+                        config
+                    );
+                </script>
+                
+                
+                <h4>--- Proposta 2  ---</h4>
+
+                <div class="graph_cont">
+                    <canvas id="myChart3"></canvas>
+                </div>
+
+                <script>
+                var barChartData3 = {
+                    labels: [
+                    "Gen 21",
+                    "Mar 21",
+                    "Mag 21",
+                    "Lug 21",
+                    "Set 21",
+                    "Nov 21",
+                    "Gen 22"
+                    ],
+
+                    datasets: [
+                      {
+                        label: "Indexed Records in OpenCitations",
+                        backgroundColor: "#AB54FD",
+                        borderColor: "purple",
+                        borderWidth: 1,
+                        data: [759516507.0, 759516507.0, 759516507.0, 1094394688.0, 1186958898.0, 1235170583.0, 1271360867.0]
+                      }
+                    ]
+                  };
+                  
+                  var chartOptions3 = {
+                    responsive: true,
+                    legend: {
+                      position: "top"
+                    },
+                    title: {
+                      display: true,
+                      text: "Chart.js Bar Chart3"
+                    },
+                    scales: {
+                      yAxes: [{
+                        ticks: {
+                          beginAtZero: true
+                        }
+                      }]
+                    }
+                  }
+                  
+                  window.onload = function() {
+                    var ctx = document.getElementById("myChart3").getContext("2d");
+                    window.myBar = new Chart(ctx, {
+                      type: "bar",
+                      data: barChartData,
+                      options: chartOptions3
+                    });
+                  };
+                  </script>
+
+
+
+
+
+
+                <h2 id="date_selection">Selezione Data</h2>
+
+                <h4>--- Proposta 1  ---</h4>
+                <p>Usa Jsuite v4. Trovare modo per salvare in variabili l'informazione della selezione e aggiungere un tasto di invio della ricerca per ricaricare la visualizzazione.</p>
+                <p>Permette di selezionare un Range di mesi validi.</p>
+                <!--Source: https://jsuites.net/v4/javascript-calendar/year-month-->
+
+ 
+                <div class="graph_cont">
+                  <input id='calendar_start'>
+                  <input id='calendar_end'>
+
+
+                </div>
+                
+                <script>
+                jSuites.calendar(document.getElementById('calendar_start'), {
+                    type: 'year-month-picker',
+                    format: 'MMM-YYYY',
+                    validRange: [ '2021-01-01', '2022-03-31' ]
+                });
+                </script>
+
+                                
+                <script>
+                jSuites.calendar(document.getElementById('calendar_end'), {
+                    type: 'year-month-picker',
+                    format: 'MMM-YYYY',
+                    validRange: [ '2021-01-01', '2022-03-31' ]
+                });
+                </script>
+
+
+
+ 
+
+
+
+
+                <h4>--- Proposta 2  ---</h4>
+                <p>Usa Jquery, non riesco a regolare la dimensione né a togliere la cronologia delle ricerche</p>
+                <!--Source : http://jsfiddle.net/DBpJe/7755/-->
+                <div class="graph_cont">
+
+
+                  <label for="startDate"> Inizio</label>
+                  <br>
+                  <input name="startDate" id="startDate" class="date-picker" />
+
+                  <br>
+
+                  <label for="endDate"> Fine  </label>
+                  <br>
+                  <input name="endtDate" id="endDate" class="date-picker" />
+                </div>
+
+
+                <script type="text/javascript">
+                  $(function() {
+                      $('.date-picker').datepicker( {
+                      changeMonth: true,
+                      changeYear: true,
+                      showButtonPanel: true,
+                      dateFormat: 'MM yy',
+                      onClose: function(dateText, inst) { 
+                          $(this).datepicker('setDate', new Date(inst.selectedYear, inst.selectedMonth, 1));
+                      }
+                      });
+                  });
+                </script>
+
+
+<h4>--- Proposta 3  ---</h4>
+  <!--http://kidsysco.github.io/jquery-ui-month-picker/-->
+<p> jQuery UI Month Picker Plugin. Go to <a href="http://kidsysco.github.io/jquery-ui-month-picker/"> source </a></p>
+<div class="graph_cont">
+  <br />Choose a start month:
+  <input id="IconDemo" class='Default' type="text" />
+</div>
+
+<div class="graph_cont">
+  <br />Choose a end month:
+  <input id="IconDemo" class='Default' type="text" />
+</div>
+
+
+
+
+
+
+                
+
+
+
+
+
+  
+
+
+
+                
+
+                
+
+
+  
+
+  
+                  
+                  
+
+
+            </div>
+        </div>
+
+        <!-- Bootstrap core JS-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Core theme JS-->
+        <script src="js/scripts.js"></script>
+
+    </body>
+</html>
