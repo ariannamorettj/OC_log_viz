@@ -19,10 +19,6 @@
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.1/jquery.js"></script>
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui.min.js"></script>
         <link rel="stylesheet" type="text/css" media="screen" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/base/jquery-ui.css">
-
-
-
-
         
 
         <link href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" rel="stylesheet" type="text/css" />
@@ -35,6 +31,17 @@
     
         <script src="MonthPicker.min.js"></script>
         <script src="examples.js"></script>
+
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
+
+
+
+
+
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
 
     </head>
     <body>
@@ -68,109 +75,176 @@
 
                 <h2 id="data_extraction">Estrazione Dati</h2>
                 <h4>--- Proposta 1  ---</h4>
+                <h5>FETCH</h5>
+                <h6></h6>
+                <p>API: <a href="https://reqres.in/api/users">https://reqres.in/api/users</a></p>
 
+                <p>recupero con fetch di first_name e second_name di vari users</p>
 
-                <div class="graph_cont">
-                    <canvas id="myChart"></canvas>
-                </div>
-
-                <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-                <script>
-                    const labels = [
-                    "Gen 21",
-                    "Mar 21",
-                    "Mag 21",
-                    "Lug 21",
-                    "Set 21",
-                    "Nov 21",
-                    "Gen 22"
-                    ];
-                  
-                    const data = {
-                      labels: labels,
-                      datasets: [{
-                        label: 'OC Indexed Records',
-                        backgroundColor: '#AB54FD',
-                        borderColor: 'purple',
-                        borderWidth: 1,
-                        data: [759516507.0, 759516507.0, 759516507.0, 1094394688.0, 1186958898.0, 1235170583.0, 1271360867.0],
-                      }]
-                    };
-                  
-                    const config = {
-                      type: 'line',
-                      data: data,
-                      options: {}
-                    };
-                </script> 
+                <main id="app" class="show_output"></main>
 
                 <script>
-                    const myChart = new Chart(
-                        document.getElementById('myChart'),
-                        config
-                    );
+                  function getData() {
+                    fetch("https://reqres.in/api/users")
+                      .then(res => {
+                        return res.json();
+                      })
+                      .then(json => {
+                        console.log(json.data);
+                        const html = json.data
+                          .map(function(item) {
+                            return "<p>" + item.first_name + " " + item.last_name + "</p>";
+                          })
+                          .join("");
+                        console.log(html);
+                        document.querySelector("#app").insertAdjacentHTML("afterbegin", html);
+                      })
+                      .catch(error => {
+                        console.log(error);
+                      });
+                  }
+
                 </script>
+
+                <button type="button" onclick="getData()" class="small_button">Nomi e Cognomi</button>
+                
+
+
+
+
+                
                 
                 
                 <h4>--- Proposta 2  ---</h4>
+                <h5>AXIOS </h5>
+                
+                <h6>Estrazione lista usernames: 1 richiesta, risposta : JSON</h6>
+                
+                <p>API: <a href="https://api.github.com/users/mapbox/followers">'https://api.github.com/users/mapbox/followers'</a></p>
+                <main id="app_2" class="show_output"></main>
+                
+                <script>
+                  function getDataAxios() {
+                    axios.get('https://api.github.com/users/mapbox/followers')
+                    .then((response) => {
+                      let datalist = [];
+                      console.log(response.data);
+                      const html = response.data
+                      .map(function(item) {
+                              datalist.push(" " + item.login);
+                            }
+                            )
+                      console.log(html);
+                      document.querySelector("#app_2").insertAdjacentHTML("afterbegin", datalist);
+                      //console.log(response.status);
+                      //console.log(response.statusText);
+                      //console.log(response.headers);
+                      //console.log(response.config);
+                      })
+                    .catch(error => {
+                        console.log(error);
+                      });
+                    }
+                </script>
+
+                <button type="button" class="small_button" onclick="getDataAxios()">Lista Usernames</button>
+
+                
+                <h6>Visualizzazione: 1 richiesta, risposta : JSON</h6>
+                <p>API: <a href="https://api.github.com/users/mapbox/followers">'https://api.github.com/users/mapbox/followers'</a></p>
+
+  
+                <ul>
+                  <li><b>axios.get</b> per recuperare i dati da api</li>
+                  <li>crea <b>liste vuote</b> per salvare i valori recuperati dai dizionari che rappresentano gli utenti</li>
+                  <li>usa <b>.map</b> per estrarre specifici dati da ogni elemento (in questo caso .login, nome utente), contare i caratteri del nome utente e associare due colori random (uno per barra e l'altro per bordo)</li>
+                  <li>usa i dati delle liste per popolare il grafico</li>
+                </ul>
+
 
                 <div class="graph_cont">
-                    <canvas id="myChart3"></canvas>
-                </div>
+                  <canvas id="myChart"></canvas>
+              </div>
 
-                <script>
-                var barChartData3 = {
-                    labels: [
-                    "Gen 21",
-                    "Mar 21",
-                    "Mag 21",
-                    "Lug 21",
-                    "Set 21",
-                    "Nov 21",
-                    "Gen 22"
-                    ],
+              <canvas id="myChart" width="400" height="400"></canvas>
+<script>
+                    axios.get('https://api.github.com/users/mapbox/followers')
+                    .then((response) => {
+                      let datalist_len = [];
+                      let datalist_nam = [];
+                      let border_col_list = [];
+                      let cont_col_list = [];
 
-                    datasets: [
-                      {
-                        label: "Indexed Records in OpenCitations",
-                        backgroundColor: "#AB54FD",
-                        borderColor: "purple",
-                        borderWidth: 1,
-                        data: [759516507.0, 759516507.0, 759516507.0, 1094394688.0, 1186958898.0, 1235170583.0, 1271360867.0]
-                      }
-                    ]
-                  };
-                  
-                  var chartOptions3 = {
-                    responsive: true,
-                    legend: {
-                      position: "top"
-                    },
-                    title: {
-                      display: true,
-                      text: "Chart.js Bar Chart3"
-                    },
-                    scales: {
-                      yAxes: [{
-                        ticks: {
-                          beginAtZero: true
+                      console.log(response.data);
+                      const html = response.data
+                      .map(function(item) {
+                              datalist_len.push((item.login).length);
+                              datalist_nam.push(item.login);
+                              border_col_list.push("#" + ((1<<24)*Math.random() | 0).toString(16));
+                              cont_col_list.push("#" + ((1<<24)*Math.random() | 0).toString(16));
+                            }
+                            )
+                      console.log(html);
+                      
+                      
+                      const ctx = document.getElementById('myChart').getContext('2d');
+                      const myChart = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: datalist_nam,
+                            datasets: [{
+                                label: 'numero di caratteri in username',
+                                data: datalist_len,
+                                backgroundColor: cont_col_list,
+                                borderColor: border_col_list,
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            scales: {
+                              xAxes: [{
+                                    ticks: {
+                                      autoSkip: false
+                                    },
+                                    gridLines: {
+                                        display:false
+                                    }   
+                                  }],
+                                y: {
+                                    beginAtZero: true
+                                },
+                                
+                            }
                         }
-                      }]
-                    }
-                  }
-                  
-                  window.onload = function() {
-                    var ctx = document.getElementById("myChart3").getContext("2d");
-                    window.myBar = new Chart(ctx, {
-                      type: "bar",
-                      data: barChartData,
-                      options: chartOptions3
                     });
-                  };
-                  </script>
 
 
+
+
+
+
+
+                      })
+                    .catch(error => {
+                        console.log(error);
+                      });
+
+
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+                
 
 
 

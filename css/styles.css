@@ -11389,5 +11389,20 @@ margin-right: 2px;
   display:inline-block;
   width: 100%;
 
+}
 
+.small_button{
+  margin: 3em;
+}
+
+ul {
+  text-align: left;
+}
+
+h6 {
+  color: #6f42c1;
+}
+
+.show_output{
+  background-color: #e5c7ca;
 }
