@@ -1,0 +1,24 @@
+{
+  "name": "reverse-proxy",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ari (da Craig)",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.3",
+    "uniqid": "^5.4.0",
+    "uniqueid": "^1.0.0"
+  },
+  "description": "",
+  "devDependencies": {
+    "@babel/core": "^7.17.9",
+    "@babel/polyfill": "^7.12.1",
+    "@babel/preset-env": "^7.16.11",
+    "babel-loader": "^8.2.4",
+    "core-js": "^3.21.1",
+    "webpack": "^5.72.0"
+  }
+}

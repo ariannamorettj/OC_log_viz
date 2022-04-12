@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Pagina Visualizzazioni</title>
+        <!-- Favicon-->
+        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="css/styles.css" rel="stylesheet" />
+
+        <script src="https://jsuites.net/v4/jsuites.js"></script>
+        <link rel="stylesheet" href="https://jsuites.net/v4/jsuites.css" type="text/css" />
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+        <!--<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script> -->
+        
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.1/jquery.js"></script>
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui.min.js"></script>
+        <link rel="stylesheet" type="text/css" media="screen" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/base/jquery-ui.css">
+        
+
+        <link href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" rel="stylesheet" type="text/css" />
+    
+        <link href="MonthPicker.min.css" rel="stylesheet" type="text/css" />
+    
+        <script src="https://code.jquery.com/jquery-1.12.1.min.js"></script>
+        <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+        <script src="https://cdn.rawgit.com/digitalBush/jquery.maskedinput/1.4.1/dist/jquery.maskedinput.min.js"></script>
+    
+        <script src="MonthPicker.min.js"></script>
+        <script src="examples.js"></script>
+
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
+
+
+
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+        <!--<script src="app.js"></script>-->
+
+
+    </head>
+    <body>
+        <!-- Responsive navbar-->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container">
+                <a class="navbar-brand" href="#">Visualizzazioni Log</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" id="navbarDropdown" href="index.html" role="button" data-bs-toggle="dropdown" aria-expanded="false">Visualizzazioni</a>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" href="index.html#indexed_records">Indexed Records</a></li>
+                                <li><a class="dropdown-item" href="index.html#used_services">Servizi Utilizzati</a></li>
+                            </ul>
+                            <a class="nav-link dropdown-toggle" id="navbarDropdown" href="samples.html" role="button" data-bs-toggle="dropdown" aria-expanded="false">Prove</a>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" href="samples.html#data_extraction">Estrazione Dati</a></li>
+                                <li><a class="dropdown-item" href="samples.html#date_selection">Selezione Data</a></li>
+                            </ul>
+                            <a class="nav-link dropdown-toggle" id="navbarDropdown" href="prom2json.html" role="button" data-bs-toggle="dropdown" aria-expanded="false">Prometheus Format</a>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" href="prom2json.html#prom_extraction">Estrazione da Prometheus</a></li>
+                                <li><a class="dropdown-item" href="prom2json.html#to_json">Da Prometheus a Json</a></li>
+                                <li><a class="dropdown-item" href="prom2json.html#viz_from_json">Visualizzazione OC log</a></li>
+
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!-- Page content-->
+        <div class="container">
+            <div class="text-center mt-5">
+                <h1>Estrazione Dati da Prometheus File Format</h1>
+
+                <h3 id="prom_extraction">Estrazione da Prometheus</h3>
+                <p>API: <a href="http://opencitations.net/statistics/2022-01">http://opencitations.net/statistics/(YYYY-MM)</a></p>
+
+                <p>Recupero e visualizzazione a schermo di dati di log in OpenCitations</p>
+
+                <main id="extract_prom" class="show_output"></main>
+
+                <div id = "result"></div>
+
+                <script src = "tiprego.js"></script>
+                <script>
+
+                    // <script src="bundle.js"> -->   browserify Uncaught TypeError: Cannot read properties of undefined (reading 'prototype')              <script src="bundle.js">
+
+
+
+                    /*const express = require('express');
+                    const request = require('request');
+
+                    const app = express();
+
+                    app.use((req, res, next) => {
+                    res.header('Access-Control-Allow-Origin', '*');
+                    next();
+                    });
+
+                    app.get('/2022-01', (req, res) => {
+                    request(
+                        { url: "http://opencitations.net/statistics/2022-01" },
+                        (error, response, body) => {
+                        if (error || response.statusCode !== 200) {
+                            return res.status(500).text({ type: 'error', message: err.message });
+                        }
+
+                        res.json(JSON.parse(body));
+                        }
+                    )
+                    });
+
+                    const PORT = process.env.PORT || 3000;
+                    app.listen(PORT, () => console.log(`listening on ${PORT}`)); --> prom2json.html:92 Uncaught ReferenceError: require is not defined*/
+
+                    /* function getPromDataAxios() {
+                        const url = "http://opencitations.net/statistics/2022-01";
+                        const config = {
+                            url,
+                            headers: {
+                                'Access-Control-Allow-Origin' : "*",
+                                'Access-Control-Allow-Methods':'GET,PUT,POST,DELETE,PATCH,OPTIONS',
+                                
+                            }
+                        }
+                        axios(config)
+                        .then(response => {
+                            console.log(response.data);
+                            });
+
+                    } */ // Access to XMLHttpRequest at 'http://opencitations.net/statistics/2022-01' from origin 'http://127.0.0.1:5500' has been blocked by CORS policy: Response to preflight request doesn't pass access control check: No 'Access-Control-Allow-Origin' header is present on the requested resource.
+
+                    /* function getPromDataAxios() {
+                        const url = "https://cors-anywhere.herokuapp.com/http://opencitations.net/statistics/2022-01";
+                        axios.get(url)
+                        .then((response) => {
+                        let datalist = [];
+                        console.log(response.data);
+                        const html = response.data
+                        .map(function(item) {
+                                datalist.push(" " + item.login);
+                                }
+                                )
+                        console.log(html);
+                        document.querySelector("#app_2").insertAdjacentHTML("afterbegin", datalist);
+                        })
+                        .catch(error => {
+                            console.log(error); 
+                        });
+                        } //403 forbidden*/
+
+                        </script>
+
+                        
+                <script>
+
+                </script>
+
+                <button type="button" onclick="getPromDataAxios()" class="small_button">Dati Prometheus</button>
+                                
+                                
+                <h3 id="to_json">Da Prometheus a Json</h3>
+                
+                <h3 id="viz_from_json">Visualizzazione OC log</h3>
+                
+  
+
+
+            </div>
+        </div>
+
+        <!-- Bootstrap core JS-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Core theme JS-->
+        <script src="js/scripts.js"></script>
+
+    </body>
+</html>
