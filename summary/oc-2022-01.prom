@@ -1,0 +1,55 @@
+# HELP opencitations_http_requests_total Counter for HTTP requests to opencitations endpoints
+# TYPE opencitations_http_requests_total counter
+opencitations_http_requests_total{endpoint="/index/api/v1/"} 0.0
+opencitations_http_requests_total{endpoint="/ccc/"} 48668.0
+opencitations_http_requests_total{endpoint="/ccc/sparql"} 190.0
+opencitations_http_requests_total{endpoint="/index/coci/ci/"} 76.0
+opencitations_http_requests_total{endpoint="/sparql"} 7917.0
+opencitations_http_requests_total{endpoint="/index/coci/api/v1/"} 302336.0
+opencitations_http_requests_total{endpoint="/api/v1/"} 1.07409e+06
+opencitations_http_requests_total{endpoint="/intrepid"} 191.0
+opencitations_http_requests_total{endpoint="/index/croci/ci/"} 13.0
+opencitations_http_requests_total{endpoint="/index/croci/api/v1/"} 0.0
+opencitations_http_requests_total{endpoint="/oci"} 607.0
+opencitations_http_requests_total{endpoint="/ccc/api/v1/"} 0.0
+opencitations_http_requests_total{endpoint="/corpus/"} 37086.0
+opencitations_http_requests_total{endpoint="/index/sparql"} 1.380134e+06
+# HELP opencitations_http_requests_created Counter for HTTP requests to opencitations endpoints
+# TYPE opencitations_http_requests_created gauge
+opencitations_http_requests_created{endpoint="/index/api/v1/"} 1.6438701653108835e+09
+opencitations_http_requests_created{endpoint="/ccc/"} 1.643870165310807e+09
+opencitations_http_requests_created{endpoint="/ccc/sparql"} 1.6438701653107855e+09
+opencitations_http_requests_created{endpoint="/index/coci/ci/"} 1.6438701653108232e+09
+opencitations_http_requests_created{endpoint="/sparql"} 1.6438701653107927e+09
+opencitations_http_requests_created{endpoint="/index/coci/api/v1/"} 1.643870165310815e+09
+opencitations_http_requests_created{endpoint="/api/v1/"} 1.6438701653108308e+09
+opencitations_http_requests_created{endpoint="/intrepid"} 1.6438701653108602e+09
+opencitations_http_requests_created{endpoint="/index/croci/ci/"} 1.643870165310876e+09
+opencitations_http_requests_created{endpoint="/index/croci/api/v1/"} 1.6438701653108377e+09
+opencitations_http_requests_created{endpoint="/oci"} 1.643870165310853e+09
+opencitations_http_requests_created{endpoint="/ccc/api/v1/"} 1.6438701653108675e+09
+opencitations_http_requests_created{endpoint="/corpus/"} 1.6438701653108454e+09
+opencitations_http_requests_created{endpoint="/index/sparql"} 1.6438701653107996e+09
+# HELP opencitations_indexed_records Indexed records
+# TYPE opencitations_indexed_records gauge
+opencitations_indexed_records 1.271360867e+09
+# HELP opencitations_harvested_data_sources Harvested data sources
+# TYPE opencitations_harvested_data_sources gauge
+opencitations_harvested_data_sources 4.0
+# HELP opencitations_agg_counter_total Aggregate HTTP requests counter to opencitations endpoints
+# TYPE opencitations_agg_counter_total counter
+opencitations_agg_counter_total{category="oc_api_requests"} 1.376426e+06
+opencitations_agg_counter_total{category="sparql_requests"} 1.388241e+06
+opencitations_agg_counter_total{category="additional_services_requests"} 798.0
+opencitations_agg_counter_total{category="dataset_requests"} 85843.0
+opencitations_agg_counter_total{category="others_requests"} 187739.0
+# HELP opencitations_agg_counter_created Aggregate HTTP requests counter to opencitations endpoints
+# TYPE opencitations_agg_counter_created gauge
+opencitations_agg_counter_created{category="oc_api_requests"} 1.6438701653107631e+09
+opencitations_agg_counter_created{category="sparql_requests"} 1.6438701653107703e+09
+opencitations_agg_counter_created{category="additional_services_requests"} 1.6438701653107429e+09
+opencitations_agg_counter_created{category="dataset_requests"} 1.643870165310755e+09
+opencitations_agg_counter_created{category="others_requests"} 1.6438701653107774e+09
+# HELP opencitations_date_info Date to which the statistics refers to
+# TYPE opencitations_date_info gauge
+opencitations_date_info{month="01",year="2022"} 1.0
