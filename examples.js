@@ -161,11 +161,11 @@ $(document).ready(function() {
 
     $('#Invio').click(function () {
         if (StartDate == "" && EndDate == "") {
-            window.alert("Seleziona una data di inizio e una data di fine")
+            window.alert("Select a Start Date and an End Date")
         } else if (StartDate == ""){
-            window.alert("Seleziona una data di inizio")
+            window.alert("Select a Start Date")
           } else if (EndDate == ""){
-            window.alert("Seleziona una data di fine")
+            window.alert("Select an End Date")
           } else {
 
 
@@ -175,8 +175,8 @@ $(document).ready(function() {
                 $('#Start').val("")
                 $('#End').val("")
 
-                window.alert("La data di inizio deve precedere la data di fine")
-                throw "La data di inizio deve precedere la data di fine"
+                window.alert("Start Date must precede End Date")
+                throw "Start Date must precede End Date"
             } else{
                 console.log(StartDate, EndDate)
 
@@ -218,7 +218,6 @@ $(document).ready(function() {
             // ESTRAZIONE DEI DATI DAL RPOMETHEUS FORMAT RESTITUITO DALL'API
             async function getMonthMetrics(month_query_list){
                 var dict_name = {};
-                let numero_casuale = 0;
                 months= {"01": "Jan","02":"Feb","03":"Mar","04":"Apr", "05":"May", "06":"Jun", "07":"Lug", "08":"Aug", "09":"Sep", "10":"Oct", "11":"Nov", "12":"Dec" };
                 let element;
             

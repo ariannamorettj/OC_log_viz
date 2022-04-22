@@ -1,6 +1,5 @@
 # OC_log_viz
-Landing page per testare delle visualizzazioni relative ai dati di log in OC
-
+Landing page for testing JS visualizations about indexed records in OpenCitations and usage of OpenCitations services.
 
 ### References
 <ol>
@@ -11,3 +10,4 @@ Landing page per testare delle visualizzazioni relative ai dati di log in OC
 <li>code to compose the list of API requests: http://jsfiddle.net/McCroskey42/1tp1hw8w/419/</li>
 <li>code to extract a string between two characters (used in prometheus text format manipulation): https://stackoverflow.com/a/19793380/15097248 </li>
 </ol>
+Step by step code documentation (ITA) available on my work <a href="https://github.com/ariannamorettj/OC_Notebook/blob/main/OC_AM_notebook.ipynb">Jupyter Notebook</a> (see: 9. 20/04 - 26/04 (Visualization - Code Finalization + DOCI - Preliminary work))
