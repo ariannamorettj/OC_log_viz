@@ -232,7 +232,6 @@ $(document).ready(function () {
 
 
           let response = await axios.get(element);
-          console.log("PROBLEMA")
 
 
           this.markDownData = response.data;
