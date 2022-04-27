@@ -99,6 +99,34 @@
         <canvas id="myChart"></canvas>
       </div>
 
+      <!--http://kidsysco.github.io/jquery-ui-month-picker/-->
+      <div class="graph_cont">
+
+        <div class="div_sx" id="from_to_div_1">
+          <div class="div_sx">
+            From: <input id="Start_1" class='Default' type="text" />
+          </div>
+          <div class="div_dx">
+            To: <input id="End_1" class='Default' type="text" />
+          </div>
+        </div>
+
+        <div class="div_dx" id="interval_div_1">
+          <div id="int_container_1">
+            <label for="Intervallo">Interval:</label>
+            <select name="Intervallo_1" id="Intervallo_1" required>
+              <option value="1">1-month</option>
+              <option value="2" selected="selected">2-month</option>
+              <option value="3">3-month</option>
+            </select>
+          </div>
+
+        </div>
+      </div>
+
+      <button id="Invio_1" , class="btn">Update Visualizations</button>
+
+
 
 
 
@@ -137,7 +165,7 @@
           <div id="int_container">
             <label for="Intervallo">Interval:</label>
             <select name="Intervallo" id="Intervallo" required>
-              <option value="1">1-month</option>
+              <option value="1" selected="selected">1-month</option>
               <option value="2">2-month</option>
               <option value="3">3-month</option>
             </select>
