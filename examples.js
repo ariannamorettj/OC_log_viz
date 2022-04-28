@@ -221,10 +221,10 @@ $(document).ready(function () {
         var end_Date = moment(end);
         var result = [];
         while (start_Date.isBefore(end_Date)) {
-          result.push("http://opencitations.net/statistics/" + start_Date.format("YYYY-MM"));
+          result.push("https://opencitations.net/statistics/" + start_Date.format("YYYY-MM"));
           start_Date.add(1, 'month');
         }
-        result.push("http://opencitations.net/statistics/" + end_Date.format("YYYY-MM"))
+        result.push("https://opencitations.net/statistics/" + end_Date.format("YYYY-MM"))
       }
 
 
@@ -425,10 +425,10 @@ $(document).ready(function () {
         var end_Date_1 = moment(end_1);
         var result_1 = [];
         while (start_Date_1.isBefore(end_Date_1)) {
-          result_1.push("http://opencitations.net/statistics/" + start_Date_1.format("YYYY-MM"));
+          result_1.push("https://opencitations.net/statistics/" + start_Date_1.format("YYYY-MM"));
           start_Date_1.add(1, 'month');
         }
-        result_1.push("http://opencitations.net/statistics/" + end_Date_1.format("YYYY-MM"))
+        result_1.push("https://opencitations.net/statistics/" + end_Date_1.format("YYYY-MM"))
       }
 
 
