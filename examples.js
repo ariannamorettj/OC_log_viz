@@ -1,7 +1,6 @@
 $(document).ready(function () {
 
-
-  //CREAZIONE E CARICAMENTO DEI GRAFICI DEFAULT (per ora coprono tutto il 2021 con i dati locali)
+  //CREAZIONE GRAFICI - DEFAULT DATA (preimpostati)
 
 
   var lineChartData = {
@@ -100,7 +99,7 @@ $(document).ready(function () {
 
 
   //CALCOLO MESI TRASCORSI TRA DUE DATE
-  // codice di elapsedMonths: https://stackoverflow.com/questions/2536379/difference-in-months-between-two-dates-in-javascript/2536445#2536445
+  // Reference: https://stackoverflow.com/questions/2536379/difference-in-months-between-two-dates-in-javascript/2536445#2536445
   function elapsedMonths(d1, d2) {
     var months;
     months = (d2.getFullYear() - d1.getFullYear()) * 12;
@@ -109,28 +108,28 @@ $(document).ready(function () {
     return months <= 0 ? 0 : months;
   }
 
-  let init_data_month = new Date('2021-01-01') // Inizializzato al gennaio 2021 perché per ora nell'API ci soni solo i resoconti mensili da quella data. Da aggiornare quando verranno caricati altri dati.
+  let init_data_month = new Date('2021-01-01') // Gennaio 2021 è il primo mese di cui sono disponibili dati da API opencitations/statistics
   let cur_data_month = new Date();
 
   let elapsed_record_months = elapsedMonths(init_data_month, cur_data_month);
 
 
-  // Default functionality.
+  // Variabili con valori default
   let start = "";
   let end = "";
   let StartDate = "";
   let EndDate = "";
-  let Interval = 1;
+  let Interval = 1; // Perché i dati di log vengono calcolati su base mensile
 
   let start_1 = "";
   let end_1 = "";
   let StartDate_1 = "";
   let EndDate_1 = "";
-  let Interval_1 = 2;
+  let Interval_1 = 2; // Perché gli indexed records aumentano su base bimestrale
 
   $('#Start').MonthPicker({
-    MaxMonth: -1, // -1 rispetto al mese corrente assumendo che il resoconto mensile sia pubblicato a fine mese
-    MinMonth: - elapsed_record_months, // TUTTAVIA: per ora funziona fino al 12/2021. Il codice è pensato per funzionare con le richieste API, che sono aggiornate al penultimo mese.
+    MaxMonth: -1, // -1 rispetto al mese corrente assumendo che il resoconto mensile sia pubblicato a fine mese  --> da rivedere, il dato va estratto da "statistics/last-month"
+    MinMonth: - elapsed_record_months,
     OnAfterChooseMonth: function (selectedDate) {
       StartDate = selectedDate;
       year = selectedDate.getFullYear();
@@ -143,8 +142,8 @@ $(document).ready(function () {
 
 
   $('#Start_1').MonthPicker({
-    MaxMonth: -1, // -1 rispetto al mese corrente assumendo che il resoconto mensile sia pubblicato a fine mese
-    MinMonth: - elapsed_record_months, // TUTTAVIA: per ora funziona fino al 12/2021. Il codice è pensato per funzionare con le richieste API, che sono aggiornate al penultimo mese.
+    MaxMonth: -1, // -1 rispetto al mese corrente assumendo che il resoconto mensile sia pubblicato a fine mese --> da rivedere, il dato va estratto da "statistics/last-month"
+    MinMonth: - elapsed_record_months,
     OnAfterChooseMonth: function (selectedDate) {
       StartDate_1 = selectedDate;
       year_1 = selectedDate.getFullYear();
@@ -156,8 +155,8 @@ $(document).ready(function () {
   });
 
   $('#End').MonthPicker({
-    MaxMonth: -1, // -1 rispetto al mese corrente assumendo che il resoconto mensile sia pubblicato a fine mese
-    MinMonth: - elapsed_record_months, // TUTTAVIA: per ora funziona fino al 12/2021. Il codice è pensato per funzionare con le richieste API, che sono aggiornate al penultimo mese.
+    MaxMonth: -1, // -1 rispetto al mese corrente assumendo che il resoconto mensile sia pubblicato a fine mese --> da rivedere, il dato va estratto da "statistics/last-month"
+    MinMonth: - elapsed_record_months,
     OnAfterChooseMonth: function (selectedDate) {
       EndDate = selectedDate;
       year = selectedDate.getFullYear();
@@ -170,8 +169,8 @@ $(document).ready(function () {
   });
 
   $('#End_1').MonthPicker({
-    MaxMonth: -1, // -1 rispetto al mese corrente assumendo che il resoconto mensile sia pubblicato a fine mese
-    MinMonth: - elapsed_record_months, // TUTTAVIA: per ora funziona fino al 12/2021. Il codice è pensato per funzionare con le richieste API, che sono aggiornate al penultimo mese.
+    MaxMonth: -1, // -1 rispetto al mese corrente assumendo che il resoconto mensile sia pubblicato a fine mese --> da rivedere, il dato va estratto da "statistics/last-month"
+    MinMonth: - elapsed_record_months,
     OnAfterChooseMonth: function (selectedDate) {
       EndDate_1 = selectedDate;
       year_1 = selectedDate.getFullYear();
@@ -194,7 +193,7 @@ $(document).ready(function () {
     console.log(Interval_1);
   });
 
-  //CODICE PER GESTIRE L'UPDATE DELLE VISUALIZZAZIONI (e messaggi di alert in caso di errore)
+  //UPDATE DELLE VISUALIZZAZIONI E GESTIONE EVENTUALI ERRORI DI SELEZIONE DATE (BAR CHART)
 
   $('#Invio').click(function () {
     if (StartDate == "" && EndDate == "") {
@@ -217,24 +216,21 @@ $(document).ready(function () {
       } else {
         console.log(StartDate, EndDate)
 
-        // codice per l'estrazione della lista di mesi modificato da : http://jsfiddle.net/McCroskey42/1tp1hw8w/419/
+        // Reference per estrazione lista di mesi: http://jsfiddle.net/McCroskey42/1tp1hw8w/419/
         var start_Date = moment(start);
         var end_Date = moment(end);
         var result = [];
         while (start_Date.isBefore(end_Date)) {
-          result.push("summary/oc-" + start_Date.format("YYYY-MM") + ".prom");
-          //result.push("http://opencitations.net/statistics/" + start_Date.format("YYYY-MM"));
+          result.push("http://opencitations.net/statistics/" + start_Date.format("YYYY-MM"));
           start_Date.add(1, 'month');
         }
-        result.push("summary/oc-" + end_Date.format("YYYY-MM") + ".prom")
-        //result.push("http://opencitations.net/statistics/" + end_Date.format("YYYY-MM"))
+        result.push("http://opencitations.net/statistics/" + end_Date.format("YYYY-MM"))
       }
 
 
       let result_w_interval = [];
 
       //Gestione dell'intervallo dei mesi
-
       if (Interval == 1) {
         result_w_interval = result;
       } else {
@@ -245,37 +241,32 @@ $(document).ready(function () {
         }
       }
 
-      //lista dati chiamate per per visualizzazione
-      console.log(result_w_interval)
+      //preparazione della lista delle richieste axios ad API
+      requests_list = []
 
+      for (i = 0; i < result_w_interval.length; i++) {
+        let ax_req_serv = axios.get(result_w_interval[i])
+        requests_list.push(ax_req_serv)
+      }
 
+      let dict_name = {};
+      months = { "01": "Jan", "02": "Feb", "03": "Mar", "04": "Apr", "05": "May", "06": "Jun", "07": "Lug", "08": "Aug", "09": "Sep", "10": "Oct", "11": "Nov", "12": "Dec" };
 
+      //RICHIESTE PARALLELE: per ogni richiesta, conversione dati da prometheus a dizionario.
+      // Dal dizionario completo ricavato dal prometheus si estraggono i dati di interesse
+      // (numero indexed records x Line Chart // numero richieste dataset + numero richieste api x Bar Chart)
+      // e si aggiungono come coppia chiave-valore ad un dizionario complessivo, dove la chiave
+      // è la data (Mmm_YYYY) e il valore è un dizionario contenente le coppie chiavi-valore relative
+      // ai dati di interesse (numero indexed records x Line Chart // numero richieste dataset + numero richieste api x Bar Chart)
 
-
-      // ESTRAZIONE DEI DATI DAL RPOMETHEUS FORMAT RESTITUITO DALL'API
-      async function getMonthMetrics(month_query_list) {
-
-        var dict_name = {};
-        months = { "01": "Jan", "02": "Feb", "03": "Mar", "04": "Apr", "05": "May", "06": "Jun", "07": "Lug", "08": "Aug", "09": "Sep", "10": "Oct", "11": "Nov", "12": "Dec" };
-        let element;
-
-
-
-        for (let i = 0; i < month_query_list.length; i++) {
-          element = month_query_list[i];
+      axios.all(requests_list).then(axios.spread((...responses) => {
+        for (i = 0; i < responses.length; i++) {
+          element = result_w_interval[i];
           const datePattern = /(\d{4})\-(\d{1,2})/;
           const date = datePattern.exec(element);
-          console.log("element;", element)
+          metricsStr = (responses[i]).data;
 
-
-          let response = await axios.get(element);
-
-
-          this.markDownData = response.data;
-          const metricsStr = this.markDownData;
-
-
-          //dividi il prometheus in corrispondenza del \n
+          //Divisione prometheus in corrispondenza del \n
           var array1 = metricsStr.split(/\r?\n/);
           // alternativa : var array = metricsStr.match(/[^\r\n]+/g);
           var filtered = array1.filter(function (value, index, arr) {
@@ -312,66 +303,44 @@ $(document).ready(function () {
 
             } else {
               // considera lo spazio come separatore, quello che viene prima è la chiave, quello che viene dopo il valore
-              // verifica cosa succede quando c'è più di uno spazio
+              // Non verificato: cosa succede quando c'è più di uno spazio
               let pos_space = filtered[i].indexOf(' ');
               let dict_key = filtered[i].substr(0, pos_space);
               let dict_val = filtered[i].substr(pos_space + 1);
-              //aggiungi a prom_to_dict la coppia chiave valore (non puù essercene già una con lo stesso nome )
               prom_to_dict[dict_key] = dict_val
-
             };
           }
-          // estrazione dei dati che servono 
+
+          // estrazione dati richiesti (in questo caso api_req e dataset_req)
           api_req = prom_to_dict.opencitations_agg_counter_total.oc_api_requests
           dataset_req = prom_to_dict.opencitations_agg_counter_total.dataset_requests
+
+
           let result = {};
           result["api_requests"] = Number(api_req);
           result["dataset_requests"] = Number(dataset_req);
 
           key_name = months[date[2]] + "_" + date[1];
           dict_name[key_name] = result;
+
+
         }
 
-
-
-        //console.log("This is the result", dict_name);
-        return dict_name;
-
-      }
-
-      //month_query_array è stata sostituita con quello che restituisce la funzione che calcola il range di mesi tra due selezioni, considerando l'intervallo specificato. 
-      //month_query_array = ['summary/oc-2021-01.prom','summary/oc-2021-02.prom', 'summary/oc-2021-03.prom',  'summary/oc-2021-04.prom', 'summary/oc-2021-05.prom', 'summary/oc-2021-06.prom','summary/oc-2021-07.prom', 'summary/oc-2021-08.prom', 'summary/oc-2021-09.prom','summary/oc-2021-10.prom'];
-      let a = getMonthMetrics(result_w_interval);
-
-      a.then(function (result) {
-        //console.log(result);
-        /// definisci le quattro liste: labels, indexed records, api requests, dataset requests
-        /// riempile con iterazione 
         api_req_list = [];
         dataset_req_list = [];
         labels_list = [];
 
-
-        for (const key in result) {
+        for (const key in dict_name) {
           labels_list.push(key);
-          api_req_list.push(result[key].api_requests);
-          dataset_req_list.push(result[key].dataset_requests);
+          api_req_list.push(dict_name[key].api_requests);
+          dataset_req_list.push(dict_name[key].dataset_requests);
         }
 
-
-        console.log("labels_list", labels_list);
-        console.log("api_req_list", api_req_list);
-        console.log("dataset_req_list", dataset_req_list);
-
-
         /// UPDATE DEI GRAFICI
-
-
         //distruzione dei grafici default (o precedentemente generati)
         myBar.destroy()
 
-        //creazione nuovi grafici con dati relativi dalla selezione dell'utente
-
+        //creazione nuovi grafici con dati relativi ai mesi richiesti dall'utente
         //BarChart per Usage of Services
         var barChartData = {
           labels: labels_list,
@@ -412,7 +381,6 @@ $(document).ready(function () {
 
 
         var ctx = document.getElementById("myChart2").getContext("2d");
-        //var ctx3 = document.getElementById("myChart3").getContext("2d");
 
         myBar = new Chart(ctx, {
           type: "bar",
@@ -420,7 +388,8 @@ $(document).ready(function () {
           options: chartOptions
         });
 
-
+      })).catch(errors => {
+        // react on errors.
       })
     }
   });
@@ -428,11 +397,7 @@ $(document).ready(function () {
 
 
 
-
-
-
-
-
+  //UPDATE DELLE VISUALIZZAZIONI E GESTIONE EVENTUALI ERRORI DI SELEZIONE DATE (LINE CHART)
 
   $('#Invio_1').click(function () {
     if (StartDate_1 == "" && EndDate_1 == "") {
@@ -455,17 +420,15 @@ $(document).ready(function () {
       } else {
         console.log(StartDate_1, EndDate_1)
 
-        // codice per l'estrazione della lista di mesi modificato da : http://jsfiddle.net/McCroskey42/1tp1hw8w/419/
+        // Reference per estrazione lista di mesi: http://jsfiddle.net/McCroskey42/1tp1hw8w/419/
         var start_Date_1 = moment(start_1);
         var end_Date_1 = moment(end_1);
         var result_1 = [];
         while (start_Date_1.isBefore(end_Date_1)) {
-          result_1.push("summary/oc-" + start_Date_1.format("YYYY-MM") + ".prom");
-          //result.push("http://opencitations.net/statistics/" + start_Date.format("YYYY-MM"));
+          result_1.push("http://opencitations.net/statistics/" + start_Date_1.format("YYYY-MM"));
           start_Date_1.add(1, 'month');
         }
-        result_1.push("summary/oc-" + end_Date_1.format("YYYY-MM") + ".prom")
-        //result.push("http://opencitations.net/statistics/" + end_Date.format("YYYY-MM"))
+        result_1.push("http://opencitations.net/statistics/" + end_Date_1.format("YYYY-MM"))
       }
 
 
@@ -483,43 +446,41 @@ $(document).ready(function () {
         }
       }
 
-      //lista dati chiamate per per visualizzazione
-      console.log(result_w_interval_1)
 
+      //preparazione della lista delle richieste axios ad API
+      requests_list_1 = []
 
+      for (i = 0; i < result_w_interval_1.length; i++) {
+        let ax_req = axios.get(result_w_interval_1[i])
+        requests_list_1.push(ax_req)
+      }
 
+      let dict_name_1 = {};
+      months = { "01": "Jan", "02": "Feb", "03": "Mar", "04": "Apr", "05": "May", "06": "Jun", "07": "Lug", "08": "Aug", "09": "Sep", "10": "Oct", "11": "Nov", "12": "Dec" };
 
+      //RICHIESTE PARALLELE: per ogni richiesta, conversione dati da prometheus a dizionario.
+      // Dal dizionario completo ricavato dal prometheus si estraggono i dati di interesse
+      // (numero indexed records x Line Chart // numero richieste dataset + numero richieste api x Bar Chart)
+      // e si aggiungono come coppia chiave-valore ad un dizionario complessivo, dove la chiave
+      // è la data (Mmm_YYYY) e il valore è un dizionario contenente le coppie chiavi-valore relative
+      // ai dati di interesse (numero indexed records x Line Chart // numero richieste dataset + numero richieste api x Bar Chart)      
 
-      // ESTRAZIONE DEI DATI DAL RPOMETHEUS FORMAT RESTITUITO DALL'API
-      async function getMonthMetrics_1(month_query_list_1) {
-
-        var dict_name = {};
-        months = { "01": "Jan", "02": "Feb", "03": "Mar", "04": "Apr", "05": "May", "06": "Jun", "07": "Lug", "08": "Aug", "09": "Sep", "10": "Oct", "11": "Nov", "12": "Dec" };
-        let element;
-
-
-
-        for (let i = 0; i < month_query_list_1.length; i++) {
-          element = month_query_list_1[i];
+      axios.all(requests_list_1).then(axios.spread((...responses) => {
+        for (i = 0; i < responses.length; i++) {
+          element = result_w_interval_1[i];
           const datePattern = /(\d{4})\-(\d{1,2})/;
           const date = datePattern.exec(element);
-          console.log("element;", element)
+          metricsStr = (responses[i]).data;
 
-
-          let response = await axios.get(element);
-
-
-          this.markDownData = response.data;
-          const metricsStr = this.markDownData;
-
-
-          //dividi il prometheus in corrispondenza del \n
+          //Divisione prometheus in corrispondenza del \n
           var array1 = metricsStr.split(/\r?\n/);
           // alternativa : var array = metricsStr.match(/[^\r\n]+/g);
           var filtered = array1.filter(function (value, index, arr) {
             return !value.startsWith("#");
             //Elimina gli elementi che iniziano con #
           });
+
+
 
           // costruisci il dizionario dal prometheus
           prom_to_dict = {}
@@ -550,47 +511,32 @@ $(document).ready(function () {
 
             } else {
               // considera lo spazio come separatore, quello che viene prima è la chiave, quello che viene dopo il valore
-              // verifica cosa succede quando c'è più di uno spazio
+              // Non verificato: cosa succede quando c'è più di uno spazio
               let pos_space = filtered[i].indexOf(' ');
               let dict_key = filtered[i].substr(0, pos_space);
               let dict_val = filtered[i].substr(pos_space + 1);
-              //aggiungi a prom_to_dict la coppia chiave valore (non puù essercene già una con lo stesso nome )
               prom_to_dict[dict_key] = dict_val
             };
           }
-          // estrazione dei dati che servono 
+
+          // estrazione dati richiesti (in questo caso ind_rec)
           ind_rec = prom_to_dict.opencitations_indexed_records
           let result = {};
           result["indexed_records"] = Number(ind_rec);
           key_name = months[date[2]] + "_" + date[1];
-          dict_name[key_name] = result;
+          dict_name_1[key_name] = result;
+
+
         }
 
-        //console.log("This is the result", dict_name);
-        return dict_name;
-      }
-
-      //month_query_array è stata sostituita con quello che restituisce la funzione che calcola il range di mesi tra due selezioni, considerando l'intervallo specificato. 
-      //month_query_array = ['summary/oc-2021-01.prom','summary/oc-2021-02.prom', 'summary/oc-2021-03.prom',  'summary/oc-2021-04.prom', 'summary/oc-2021-05.prom', 'summary/oc-2021-06.prom','summary/oc-2021-07.prom', 'summary/oc-2021-08.prom', 'summary/oc-2021-09.prom','summary/oc-2021-10.prom'];
-      let a_1 = getMonthMetrics_1(result_w_interval_1);
-
-      a_1.then(function (result) {
-        //console.log(result);
-        /// definisci le quattro liste: labels, indexed records, api requests, dataset requests
-        /// riempile con iterazione 
         ind_rec_list = [];
         labels_list = [];
 
 
-        for (const key in result) {
+        for (const key in dict_name_1) {
           labels_list.push(key);
-          ind_rec_list.push(result[key].indexed_records);
+          ind_rec_list.push(dict_name_1[key].indexed_records);
         }
-
-        console.log("labels_list", labels_list);
-        console.log("ind_rec_list", ind_rec_list);
-
-
 
         /// UPDATE DEI GRAFICI
 
@@ -598,8 +544,7 @@ $(document).ready(function () {
         //distruzione dei grafici default (o precedentemente generati)
         myLine.destroy()
 
-        //creazione nuovi grafici con dati relativi dalla selezione dell'utente
-
+        //creazione nuovi grafici con dati relativi ai mesi richiesti dall'utente
         // Linechart per indexed records
         var lineChartData = {
           labels: labels_list,
@@ -638,6 +583,9 @@ $(document).ready(function () {
           data: lineChartData,
           options: lineChartOptions
         });
+
+      })).catch(errors => {
+        // react on errors.
       })
     }
   });
