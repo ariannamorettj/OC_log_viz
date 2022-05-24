@@ -1,13 +1,8 @@
-
-if (document.readyState === "complete") {
-  console.log("WOW");
-}
-
 $(window).load(function () {
   let last_date;
   let lastDate;
 
-  //CREAZIONE GRAFICI - DEFAULT DATA (preimpostati)
+  // Default data visualizations: from the year before the last available month to the last available month
 
   axios.get('https://opencitations.net/statistics/last-month')
     .then(function (response) {
@@ -19,7 +14,7 @@ $(window).load(function () {
       });
       last_m_y = filtered0[0];
 
-      //reference: https://stackoverflow.com/a/19793380
+      //reference: https://stackoverflow.com/a/19793380/15097248
 
       function extractAllText(last_m_y) {
         const re = /"(.*?)"/g;
@@ -36,10 +31,10 @@ $(window).load(function () {
       let date_list = extractAllText(last_m_y)
       let end_year = date_list[1]
       let end_month = date_list[0]
-      last_date = String(end_year + "-" + end_month) // 04-2022
+      last_date = String(end_year + "-" + end_month) // Format: MM-YYYY
       $("#End_1").val(end_month + "/" + end_year)
       $("#End").val(end_month + "/" + end_year)
-      lastDate = new Date(last_date) //Fri Apr 01 2022 02:00:00 GMT+0200 (Ora legale dell’Europa centrale)
+      lastDate = new Date(last_date) // Format: (Ora legale dell’Europa centrale) Day Mon DD YYYY HH:HH:HH GMT+0200
     })
     .catch(function (error) {
       // handle error
@@ -54,7 +49,7 @@ $(window).load(function () {
         return ybf_date;
       };
 
-      let yearbeforeDate = subtractMonths(12, lastDate); //Thu Apr 01 2021 02:00:00 GMT+0200 (Ora legale dell’Europa centrale)
+      let yearbeforeDate = subtractMonths(12, lastDate); // Format: (Ora legale dell’Europa centrale) Day Mon DD YYYY HH:HH:HH GMT+0200
 
       function get_YYYY_MM_date(date_format) {
         let month = String(date_format.getUTCMonth() + 1);
@@ -89,7 +84,6 @@ $(window).load(function () {
 
       let default_query_array = get_default_query_array(yearbefore_date, last_date);
 
-      // BARCHART DEFAULT 
       months = { "01": "Jan", "02": "Feb", "03": "Mar", "04": "Apr", "05": "May", "06": "Jun", "07": "Lug", "08": "Aug", "09": "Sep", "10": "Oct", "11": "Nov", "12": "Dec" };
 
       requests_list = []
@@ -106,15 +100,15 @@ $(window).load(function () {
           const date = datePattern.exec(element);
           metricsStr = (responses[i]).data;
 
-          //Divisione prometheus in corrispondenza del \n
+          // The prometheus content is new-line-delimited
           var array1 = metricsStr.split(/\r?\n/);
-          // alternativa : var array = metricsStr.match(/[^\r\n]+/g);
+          // or : var array = metricsStr.match(/[^\r\n]+/g);
           var filtered = array1.filter(function (value, index, arr) {
             return !value.startsWith("#");
-            //Elimina gli elementi che iniziano con #
+            // discard the rows starting with "#", since those are comments
           });
 
-          // costruisci il dizionario dal prometheus
+          // populate a dictionary with the data extracted from the prometheus 
           prom_to_dict = {}
 
           const pattern = /{/;
@@ -142,8 +136,8 @@ $(window).load(function () {
               prom_to_dict[dict_key][nest_dict_key] = nest_dict_val
 
             } else {
-              // considera lo spazio come separatore, quello che viene prima è la chiave, quello che viene dopo il valore
-              // Non verificato: cosa succede quando c'è più di uno spazio
+              // The whitespace is used as separator between a key and a value
+              // TO DO: Handle the possibility of multiple spaces (never encountered up to now)
               let pos_space = filtered[i].indexOf(' ');
               let dict_key = filtered[i].substr(0, pos_space);
               let dict_val = filtered[i].substr(pos_space + 1);
@@ -151,7 +145,7 @@ $(window).load(function () {
             };
           }
 
-          // estrazione dati richiesti (in questo caso api_req e dataset_req)
+          // extraction of required data: api_req e dataset_req
           api_req = prom_to_dict.opencitations_agg_counter_total.oc_api_requests
           dataset_req = prom_to_dict.opencitations_agg_counter_total.dataset_requests
 
@@ -176,9 +170,8 @@ $(window).load(function () {
           dataset_req_list.push(dict_name[key].dataset_requests);
         }
 
-        /// UPDATE DEI GRAFICI
-        //creazione nuovi grafici con dati relativi ai mesi richiesti dall'utente
-        //BarChart per Usage of Services
+        /// Data visualizations update, with the data chosen by the user
+        // BarChart for Usage of Services
         var barChartData = {
           labels: labels_list,
           datasets: [
@@ -232,7 +225,7 @@ $(window).load(function () {
 
 
 
-      // LINECHART DEFAULT 
+      // LineChart for Indexed Records 
 
       let default_query_array_bimestr = [];
       for (const [index, element] of default_query_array.entries()) {
@@ -256,14 +249,14 @@ $(window).load(function () {
           const date = datePattern.exec(element);
           metricsStr = (responses[i]).data;
 
-          //Divisione prometheus in corrispondenza del \n
+          //The prometheus content is new-line-delimited
           var array1 = metricsStr.split(/\r?\n/);
-          // alternativa : var array = metricsStr.match(/[^\r\n]+/g);
+          // or : var array = metricsStr.match(/[^\r\n]+/g);
           var filtered = array1.filter(function (value, index, arr) {
             return !value.startsWith("#");
-            //Elimina gli elementi che iniziano con #
+            // discard the rows starting with "#", since those are comments
           });
-          // costruisci il dizionario dal prometheus
+          // populate a dictionary with the data extracted from the prometheus
           prom_to_dict = {}
           const pattern = /{/;
           //reference: https://stackoverflow.com/a/19793380/15097248
@@ -290,8 +283,8 @@ $(window).load(function () {
               prom_to_dict[dict_key][nest_dict_key] = nest_dict_val
 
             } else {
-              // considera lo spazio come separatore, quello che viene prima è la chiave, quello che viene dopo il valore
-              // Non verificato: cosa succede quando c'è più di uno spazio
+              // The whitespace is used as separator between a key and a value
+              // TO DO: Handle the possibility of multiple spaces (never encountered up to now)
               let pos_space = filtered[i].indexOf(' ');
               let dict_key = filtered[i].substr(0, pos_space);
               let dict_val = filtered[i].substr(pos_space + 1);
@@ -299,7 +292,7 @@ $(window).load(function () {
             };
           }
 
-          // estrazione dati richiesti (in questo caso ind_rec)
+          // extraction of required data: api_req e dataset_req
           ind_rec = prom_to_dict.opencitations_indexed_records
           let result = {};
           result["indexed_records"] = Number(ind_rec);
@@ -318,8 +311,9 @@ $(window).load(function () {
           ind_rec_list.push(dict_name_1[key].indexed_records);
         }
 
-        //creazione grafici default con dati relativi ai mesi richiesti dall'utente
-        // Linechart per indexed records
+        // Data visualizations update, with the data chosen by the user
+        // Linechart for Indexed Records
+
         var lineChartData = {
           labels: labels_list,
           datasets: [
@@ -363,7 +357,7 @@ $(window).load(function () {
       })
     })
     .then(function () {
-      //CALCOLO MESI TRASCORSI TRA DUE DATE
+      // code for computing the number of months elapsed between two dates
       // Reference: https://stackoverflow.com/questions/2536379/difference-in-months-between-two-dates-in-javascript/2536445#2536445
       function elapsedMonths(d1, d2) {
         var months;
@@ -373,7 +367,7 @@ $(window).load(function () {
         return months <= 0 ? 0 : months;
       }
 
-      let init_data_month = new Date('2021-01-01') // Gennaio 2021 è il primo mese di cui sono disponibili dati da API opencitations/statistics
+      let init_data_month = new Date('2021-01-01') // Jan 2021 is the first months whose data were made available by opencitations/statistics
       let cur_data_month = new Date();
       let ultima_data_array = $("#End").val().split("/")
       let ultima_data = ultima_data_array[0] + "/01/" + ultima_data_array[1]
@@ -387,7 +381,7 @@ $(window).load(function () {
       console.log("latest_cur_elapsed_record_months", latest_cur_elapsed_record_months)
 
 
-      // Variabili con valori default
+      // default-value variables
       let split_array_start = $("#Start").val().split("/")
       let split_array_end = $("#End").val().split("/")
 
@@ -396,16 +390,16 @@ $(window).load(function () {
       let end = split_array_end[1] + "-" + split_array_end[0];
       let StartDate = new Date(split_array_start[0] + "/01/" + split_array_start[1]);
       let EndDate = new Date(split_array_end[0] + "/01/" + split_array_end[1]);
-      let Interval = 1; // Perché i dati di log vengono calcolati su base mensile
+      let Interval = 1; // Log data are computed monthly
 
       let start_1 = split_array_start[1] + "-" + split_array_start[0];
       let end_1 = split_array_end[1] + "-" + split_array_end[0];
       let StartDate_1 = new Date(split_array_start[0] + "/01/" + split_array_start[1]);
       let EndDate_1 = new Date(split_array_end[0] + "/01/" + split_array_end[1]);
-      let Interval_1 = 2; // Perché gli indexed records aumentano su base bimestrale
+      let Interval_1 = 2; // Indexed Records growth is computed on two-month base
 
       $('#Start').MonthPicker({
-        MaxMonth: - latest_cur_elapsed_record_months, // -1 rispetto al mese corrente assumendo che il resoconto mensile sia pubblicato a fine mese  --> da rivedere, il dato va estratto da "statistics/last-month"
+        MaxMonth: - latest_cur_elapsed_record_months, // it depends on the last-month available (API response - statistics/last-month)
         MinMonth: - elapsed_record_months,
         OnAfterChooseMonth: function (selectedDate) {
           StartDate = selectedDate;
@@ -419,7 +413,7 @@ $(window).load(function () {
 
 
       $('#Start_1').MonthPicker({
-        MaxMonth: - latest_cur_elapsed_record_months, // -1 rispetto al mese corrente assumendo che il resoconto mensile sia pubblicato a fine mese --> da rivedere, il dato va estratto da "statistics/last-month"
+        MaxMonth: - latest_cur_elapsed_record_months, // it depends on the last-month available (API response - statistics/last-month)
         MinMonth: - elapsed_record_months,
         OnAfterChooseMonth: function (selectedDate) {
           StartDate_1 = selectedDate;
@@ -432,7 +426,7 @@ $(window).load(function () {
       });
 
       $('#End').MonthPicker({
-        MaxMonth: - latest_cur_elapsed_record_months, // -1 rispetto al mese corrente assumendo che il resoconto mensile sia pubblicato a fine mese --> da rivedere, il dato va estratto da "statistics/last-month"
+        MaxMonth: - latest_cur_elapsed_record_months, // it depends on the last-month available (API response - statistics/last-month)
         MinMonth: - elapsed_record_months,
         OnAfterChooseMonth: function (selectedDate) {
           EndDate = selectedDate;
@@ -446,7 +440,7 @@ $(window).load(function () {
       });
 
       $('#End_1').MonthPicker({
-        MaxMonth: - latest_cur_elapsed_record_months, // -1 rispetto al mese corrente assumendo che il resoconto mensile sia pubblicato a fine mese --> da rivedere, il dato va estratto da "statistics/last-month"
+        MaxMonth: - latest_cur_elapsed_record_months, // it depends on the last-month available (API response - statistics/last-month)
         MinMonth: - elapsed_record_months,
         OnAfterChooseMonth: function (selectedDate) {
           EndDate_1 = selectedDate;
@@ -470,7 +464,7 @@ $(window).load(function () {
         console.log(Interval_1);
       });
 
-      //UPDATE DELLE VISUALIZZAZIONI E GESTIONE EVENTUALI ERRORI DI SELEZIONE DATE (BAR CHART)
+      // Data visualizations update and error-handling
 
       $('#Invio').click(function () {
         if (StartDate == "" && EndDate == "") {
@@ -493,7 +487,7 @@ $(window).load(function () {
           } else {
             console.log(StartDate, EndDate)
 
-            // Reference per estrazione lista di mesi: http://jsfiddle.net/McCroskey42/1tp1hw8w/419/
+            // Month list extraction: http://jsfiddle.net/McCroskey42/1tp1hw8w/419/
             var start_Date = moment(start);
             var end_Date = moment(end);
             var result = [];
@@ -507,7 +501,7 @@ $(window).load(function () {
 
           let result_w_interval = [];
 
-          //Gestione dell'intervallo dei mesi
+          // Month-interval management
           if (Interval == 1) {
             result_w_interval = result;
           } else {
@@ -519,7 +513,7 @@ $(window).load(function () {
           }
 
 
-          //preparazione della lista delle richieste axios ad API
+          // Preparation of the axios API requests list
           requests_list = []
 
           for (i = 0; i < result_w_interval.length; i++) {
@@ -530,12 +524,9 @@ $(window).load(function () {
           let dict_name = {};
           months = { "01": "Jan", "02": "Feb", "03": "Mar", "04": "Apr", "05": "May", "06": "Jun", "07": "Lug", "08": "Aug", "09": "Sep", "10": "Oct", "11": "Nov", "12": "Dec" };
 
-          //RICHIESTE PARALLELE: per ogni richiesta, conversione dati da prometheus a dizionario.
-          // Dal dizionario completo ricavato dal prometheus si estraggono i dati di interesse
-          // (numero indexed records x Line Chart // numero richieste dataset + numero richieste api x Bar Chart)
-          // e si aggiungono come coppia chiave-valore ad un dizionario complessivo, dove la chiave
-          // è la data (Mmm_YYYY) e il valore è un dizionario contenente le coppie chiavi-valore relative
-          // ai dati di interesse (numero indexed records x Line Chart // numero richieste dataset + numero richieste api x Bar Chart)
+          // Parallel requests: for each request, prometheus data are stored in a dictionary.
+          // The dictionary is filtered, so to keep the relevant data only (i.e., indexed records number and data about services usage)
+          // This reduced dictionary has the dates as keys (Mon_YYYY format) and dictionaries storing the relevant data as values. 
 
           axios.all(requests_list).then(axios.spread((...responses) => {
             for (i = 0; i < responses.length; i++) {
@@ -544,15 +535,11 @@ $(window).load(function () {
               const date = datePattern.exec(element);
               metricsStr = (responses[i]).data;
 
-              //Divisione prometheus in corrispondenza del \n
               var array1 = metricsStr.split(/\r?\n/);
-              // alternativa : var array = metricsStr.match(/[^\r\n]+/g);
               var filtered = array1.filter(function (value, index, arr) {
                 return !value.startsWith("#");
-                //Elimina gli elementi che iniziano con #
               });
 
-              // costruisci il dizionario dal prometheus
               prom_to_dict = {}
 
               const pattern = /{/;
@@ -580,8 +567,6 @@ $(window).load(function () {
                   prom_to_dict[dict_key][nest_dict_key] = nest_dict_val
 
                 } else {
-                  // considera lo spazio come separatore, quello che viene prima è la chiave, quello che viene dopo il valore
-                  // Non verificato: cosa succede quando c'è più di uno spazio
                   let pos_space = filtered[i].indexOf(' ');
                   let dict_key = filtered[i].substr(0, pos_space);
                   let dict_val = filtered[i].substr(pos_space + 1);
@@ -589,7 +574,6 @@ $(window).load(function () {
                 };
               }
 
-              // estrazione dati richiesti (in questo caso api_req e dataset_req)
               api_req = prom_to_dict.opencitations_agg_counter_total.oc_api_requests
               dataset_req = prom_to_dict.opencitations_agg_counter_total.dataset_requests
 
@@ -614,12 +598,12 @@ $(window).load(function () {
               dataset_req_list.push(dict_name[key].dataset_requests);
             }
 
-            /// UPDATE DEI GRAFICI
-            //distruzione dei grafici default (o precedentemente generati)
+            // Visualizations Update
+            // Destruction of current visualizations
             myBar.destroy()
 
-            //creazione nuovi grafici con dati relativi ai mesi richiesti dall'utente
-            //BarChart per Usage of Services
+            // Creation of new graphs with data about the months requested by the user 
+            // BarChart for Usage of Services
             var barChartData = {
               labels: labels_list,
               datasets: [
@@ -675,7 +659,7 @@ $(window).load(function () {
 
 
 
-      //UPDATE DELLE VISUALIZZAZIONI E GESTIONE EVENTUALI ERRORI DI SELEZIONE DATE (LINE CHART)
+      // Data visualizations update and error-handling
 
       $('#Invio_1').click(function () {
         if (StartDate_1 == "" && EndDate_1 == "") {
@@ -698,7 +682,7 @@ $(window).load(function () {
           } else {
             console.log(StartDate_1, EndDate_1)
 
-            // Reference per estrazione lista di mesi: http://jsfiddle.net/McCroskey42/1tp1hw8w/419/
+            // Month list extraction: http://jsfiddle.net/McCroskey42/1tp1hw8w/419/
             var start_Date_1 = moment(start_1);
             var end_Date_1 = moment(end_1);
             var result_1 = [];
@@ -712,8 +696,7 @@ $(window).load(function () {
 
           let result_w_interval_1 = [];
 
-          //Gestione dell'intervallo dei mesi
-
+          // Month-interval management
           if (Interval_1 == 1) {
             result_w_interval_1 = result_1;
           } else {
@@ -725,7 +708,7 @@ $(window).load(function () {
           }
 
 
-          //preparazione della lista delle richieste axios ad API
+          // Preparation of the axios API requests list
           requests_list_1 = []
 
           for (i = 0; i < result_w_interval_1.length; i++) {
@@ -736,12 +719,9 @@ $(window).load(function () {
           let dict_name_1 = {};
           months = { "01": "Jan", "02": "Feb", "03": "Mar", "04": "Apr", "05": "May", "06": "Jun", "07": "Lug", "08": "Aug", "09": "Sep", "10": "Oct", "11": "Nov", "12": "Dec" };
 
-          //RICHIESTE PARALLELE: per ogni richiesta, conversione dati da prometheus a dizionario.
-          // Dal dizionario completo ricavato dal prometheus si estraggono i dati di interesse
-          // (numero indexed records x Line Chart // numero richieste dataset + numero richieste api x Bar Chart)
-          // e si aggiungono come coppia chiave-valore ad un dizionario complessivo, dove la chiave
-          // è la data (Mmm_YYYY) e il valore è un dizionario contenente le coppie chiavi-valore relative
-          // ai dati di interesse (numero indexed records x Line Chart // numero richieste dataset + numero richieste api x Bar Chart)      
+          // Parallel requests: for each request, prometheus data are stored in a dictionary.
+          // The dictionary is filtered, so to keep the relevant data only (i.e., indexed records number and data about services usage)
+          // This reduced dictionary has the dates as keys (Mon_YYYY format) and dictionaries storing the relevant data as values. 
 
           axios.all(requests_list_1).then(axios.spread((...responses) => {
             for (i = 0; i < responses.length; i++) {
@@ -750,17 +730,11 @@ $(window).load(function () {
               const date = datePattern.exec(element);
               metricsStr = (responses[i]).data;
 
-              //Divisione prometheus in corrispondenza del \n
               var array1 = metricsStr.split(/\r?\n/);
-              // alternativa : var array = metricsStr.match(/[^\r\n]+/g);
               var filtered = array1.filter(function (value, index, arr) {
                 return !value.startsWith("#");
-                //Elimina gli elementi che iniziano con #
               });
 
-
-
-              // costruisci il dizionario dal prometheus
               prom_to_dict = {}
 
               const pattern = /{/;
@@ -788,8 +762,6 @@ $(window).load(function () {
                   prom_to_dict[dict_key][nest_dict_key] = nest_dict_val
 
                 } else {
-                  // considera lo spazio come separatore, quello che viene prima è la chiave, quello che viene dopo il valore
-                  // Non verificato: cosa succede quando c'è più di uno spazio
                   let pos_space = filtered[i].indexOf(' ');
                   let dict_key = filtered[i].substr(0, pos_space);
                   let dict_val = filtered[i].substr(pos_space + 1);
@@ -797,8 +769,8 @@ $(window).load(function () {
                 };
               }
 
-              // estrazione dati richiesti (in questo caso ind_rec)
               ind_rec = prom_to_dict.opencitations_indexed_records
+
               let result = {};
               result["indexed_records"] = Number(ind_rec);
               key_name = months[date[2]] + "_" + date[1];
@@ -816,14 +788,13 @@ $(window).load(function () {
               ind_rec_list.push(dict_name_1[key].indexed_records);
             }
 
-            /// UPDATE DEI GRAFICI
+            // Visualizations Update
+            // Destruction of current visualizations
 
-
-            //distruzione dei grafici default (o precedentemente generati)
             myLine.destroy()
 
-            //creazione nuovi grafici con dati relativi ai mesi richiesti dall'utente
-            // Linechart per indexed records
+            // Creation of new graphs with data about the months requested by the user 
+            // Linechart for Indexed Records
             var lineChartData = {
               labels: labels_list,
               datasets: [
@@ -868,43 +839,6 @@ $(window).load(function () {
         }
       });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 });
